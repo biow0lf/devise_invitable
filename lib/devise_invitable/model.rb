@@ -34,9 +34,9 @@ module Devise
         else
           {:polymorphic => true}
         end
-	      if fk = Devise.invited_by_foreign_key
-	        belongs_to_options[:foreign_key] = fk
-	      end
+        if fk = Devise.invited_by_foreign_key
+          belongs_to_options[:foreign_key] = fk
+        end
         if defined?(ActiveRecord) && defined?(ActiveRecord::Base) && self < ActiveRecord::Base
           counter_cache = Devise.invited_by_counter_cache
           belongs_to_options.merge! :counter_cache => counter_cache if counter_cache
