@@ -5,6 +5,7 @@ module DeviseInvitable
     end
     
     private
+
     def default_controllers_with_invitable(options)
       options[:controllers] ||= {}
       options[:controllers][:registrations] ||= "devise_invitable/registrations"

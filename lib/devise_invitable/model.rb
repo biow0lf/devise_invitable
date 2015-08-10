@@ -34,9 +34,9 @@ module Devise
         else
           {:polymorphic => true}
         end
-	if fk = Devise.invited_by_foreign_key
-	  belongs_to_options[:foreign_key] = fk
-	end
+	      if fk = Devise.invited_by_foreign_key
+	        belongs_to_options[:foreign_key] = fk
+	      end
         if defined?(ActiveRecord) && defined?(ActiveRecord::Base) && self < ActiveRecord::Base
           counter_cache = Devise.invited_by_counter_cache
           belongs_to_options.merge! :counter_cache => counter_cache if counter_cache
@@ -88,7 +88,7 @@ module Devise
         end
       end
 
-      # Verify wheather a user is created by invitation, irrespective to invitation status
+      # Verify whether a user is created by invitation, irrespective to invitation status
       def created_by_invite?
         invitation_sent_at.present?
       end
@@ -181,53 +181,53 @@ module Devise
 
       protected
 
-        def block_from_invitation?
-          invited_to_sign_up?
-        end
+      def block_from_invitation?
+        invited_to_sign_up?
+      end
 
-        # Checks if the invitation for the user is within the limit time.
-        # We do this by calculating if the difference between today and the
-        # invitation sent date does not exceed the invite for time configured.
-        # Invite_for is a model configuration, must always be an integer value.
-        #
-        # Example:
-        #
-        #   # invite_for = 1.day and invitation_sent_at = today
-        #   invitation_period_valid?   # returns true
-        #
-        #   # invite_for = 5.days and invitation_sent_at = 4.days.ago
-        #   invitation_period_valid?   # returns true
-        #
-        #   # invite_for = 5.days and invitation_sent_at = 5.days.ago
-        #   invitation_period_valid?   # returns false
-        #
-        #   # invite_for = nil
-        #   invitation_period_valid?   # will always return true
-        #
-        def invitation_period_valid?
-          time = invitation_created_at || invitation_sent_at
-          time && (self.class.invite_for.to_i.zero? || time.utc >= self.class.invite_for.ago)
-        end
+      # Checks if the invitation for the user is within the limit time.
+      # We do this by calculating if the difference between today and the
+      # invitation sent date does not exceed the invite for time configured.
+      # Invite_for is a model configuration, must always be an integer value.
+      #
+      # Example:
+      #
+      #   # invite_for = 1.day and invitation_sent_at = today
+      #   invitation_period_valid?   # returns true
+      #
+      #   # invite_for = 5.days and invitation_sent_at = 4.days.ago
+      #   invitation_period_valid?   # returns true
+      #
+      #   # invite_for = 5.days and invitation_sent_at = 5.days.ago
+      #   invitation_period_valid?   # returns false
+      #
+      #   # invite_for = nil
+      #   invitation_period_valid?   # will always return true
+      #
+      def invitation_period_valid?
+        time = invitation_created_at || invitation_sent_at
+        time && (self.class.invite_for.to_i.zero? || time.utc >= self.class.invite_for.ago)
+      end
 
-        # Generates a new random token for invitation, and stores the time
-        # this token is being generated
-        def generate_invitation_token
-          raw, enc = Devise.token_generator.generate(self.class, :invitation_token)
-          @raw_invitation_token = raw
-          self.invitation_token = enc
-        end
+      # Generates a new random token for invitation, and stores the time
+      # this token is being generated
+      def generate_invitation_token
+        raw, enc = Devise.token_generator.generate(self.class, :invitation_token)
+        @raw_invitation_token = raw
+        self.invitation_token = enc
+      end
 
-        def generate_invitation_token!
-          generate_invitation_token && save(:validate => false)
-        end
+      def generate_invitation_token!
+        generate_invitation_token && save(:validate => false)
+      end
 
-        def new_record_and_responds_to?(method)
-          self.new_record? && self.respond_to?(method, true)
-        end
+      def new_record_and_responds_to?(method)
+        self.new_record? && self.respond_to?(method, true)
+      end
 
-        def no_token_present_or_skip_invitation?
-          self.invitation_token.nil? || (!skip_invitation || @raw_invitation_token.nil?)
-        end
+      def no_token_present_or_skip_invitation?
+        self.invitation_token.nil? || (!skip_invitation || @raw_invitation_token.nil?)
+      end
 
       module ClassMethods
         # Return fields to invite
@@ -311,7 +311,6 @@ module Devise
         def after_invitation_accepted(*args, &blk)
           set_callback(:invitation_accepted, :after, *args, &blk)
         end
-
 
         Devise::Models.config(self, :invite_for)
         Devise::Models.config(self, :validate_on_invite)
